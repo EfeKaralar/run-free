@@ -1,4 +1,4 @@
-package com.example.run_free
+package com.runfree.app
 
 import io.flutter.embedding.android.FlutterActivity
 

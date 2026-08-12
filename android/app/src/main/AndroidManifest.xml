@@ -1,6 +1,45 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      Tracelet's SDK library manifest already declares the location permissions
+      and its services/receivers, and the manifest merger unions them in. They
+      are repeated here on purpose: this file is the honest, auditable statement
+      of everything Run Free asks the user for. Keep it in sync.
+    -->
+
+    <!-- Location. COARSE is required alongside FINE from Android 12 (API 31),
+         where the user may grant approximate location only. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Recording continues while the screen is off or the app is backgrounded.
+         Android 10+ (API 29) gates that behind a separate runtime grant that
+         must be requested *after* foreground location is already held. -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- The recording session runs as a foreground service so Android does not
+         kill it mid-activity. FOREGROUND_SERVICE_LOCATION is mandatory from
+         Android 14 (API 34) for the "location" service type. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
+    <!-- Motion detection. Lets Tracelet idle the GPS while the user is
+         stationary, which is where most of the battery saving comes from.
+         Optional: it falls back to raw accelerometer sampling if denied. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <!-- Android 13+ (API 33): required to show the ongoing recording
+         notification that the foreground service is attached to. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Keeps the CPU awake between GPS fixes during an active recording. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Map tiles only. Run Free sends no activity data anywhere. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:label="run_free"
+        android:label="Run Free"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -31,6 +70,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.

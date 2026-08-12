@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.run_free"
+    namespace = "com.runfree.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -16,10 +16,10 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.run_free"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        applicationId = "com.runfree.app"
+        // Tracelet's Android SDK requires API 26+. Do not lower this without
+        // checking tracelet_android/android/build.gradle first.
+        minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

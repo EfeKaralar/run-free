@@ -16,6 +16,38 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>run_free</string>
+
+	<!-- ===================================================================
+	     Location & motion.
+	     These strings are shown verbatim in the iOS permission dialogs, so
+	     they must explain the benefit to the user, not the mechanism. Apple
+	     rejects vague ones ("needs your location") during review.
+	     ================================================================= -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Run Free uses your location to record the route, distance and pace of your activity.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Run Free needs Always access so it can keep recording your route when your screen is off or you switch to another app mid-activity. Your location never leaves your device.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Run Free uses motion data to detect when you start and stop moving, so it can switch off GPS while you are stationary and save battery.</string>
+
+	<!-- location: keeps recording in the background during an activity.
+	     fetch/processing: let Tracelet's periodic and scheduled modes run. -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
+
+	<!-- BGTaskScheduler refuses to register an identifier that is not declared
+	     here. These are Tracelet's own identifiers, taken from
+	     PeriodicRefreshScheduler.swift and ScheduleManager.swift. -->
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.tracelet.periodic.refresh</string>
+		<string>com.tracelet.schedule.start</string>
+		<string>com.tracelet.schedule.stop</string>
+	</array>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
