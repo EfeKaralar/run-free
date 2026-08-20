@@ -35,7 +35,8 @@
     <!-- Keeps the CPU awake between GPS fixes during an active recording. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Map tiles only. Run Free sends no activity data anywhere. -->
+    <!-- Map tiles only today. Opt-in, end-to-end encrypted sync is on the
+         roadmap; until it ships, no activity data is uploaded anywhere. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application

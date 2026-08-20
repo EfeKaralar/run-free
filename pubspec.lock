@@ -440,6 +440,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.4"
+  http_cache_file_store:
+    dependency: "direct main"
+    description:
+      name: http_cache_file_store
+      sha256: b83bc178226d82a52f56b97801639ff8d94caeaf5464d25cc96082015111f375
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   http_multi_server:
     dependency: transitive
     description:
@@ -1005,6 +1013,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "61894a1956de6b4fc1aefd0892e109514a1a706cbece3ac59decd90ff5a7a423"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.1+1"
   term_glyph:
     dependency: transitive
     description:

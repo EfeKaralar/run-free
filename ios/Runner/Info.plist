@@ -26,7 +26,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Run Free uses your location to record the route, distance and pace of your activity.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Run Free needs Always access so it can keep recording your route when your screen is off or you switch to another app mid-activity. Your location never leaves your device.</string>
+	<string>Run Free needs Always access so it can keep recording your route when your screen is off or you switch to another app mid-activity. Your route is stored on your device and is never uploaded without your explicit consent.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Run Free uses motion data to detect when you start and stop moving, so it can switch off GPS while you are stationary and save battery.</string>
 

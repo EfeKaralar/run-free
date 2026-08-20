@@ -1,7 +1,13 @@
 // Copyright 2026 The Run Free Authors
 // SPDX-License-Identifier: Apache-2.0
 
+import 'dart:io';
+
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:run_free/src/core/map_tiles.dart';
 import 'package:run_free/src/core/units.dart';
 import 'package:run_free/src/data/database/database.dart';
 import 'package:run_free/src/data/repositories/activity_repository.dart';
@@ -11,6 +17,7 @@ import 'package:run_free/src/domain/services/location_tracker.dart';
 import 'package:run_free/src/domain/services/tracelet_location_tracker.dart';
 import 'package:run_free/src/features/recording/recording_controller.dart';
 import 'package:run_free/src/features/recording/recording_state.dart';
+import 'package:run_free/src/gpx/gpx_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Providers are written by hand rather than generated. Riverpod's codegen is
@@ -76,6 +83,33 @@ final recordingControllerProvider =
     NotifierProvider<RecordingController, RecordingState>(
       RecordingController.new,
     );
+
+/// GPX import/export, including the share sheet and file picker.
+final gpxServiceProvider = Provider<GpxService>((ref) {
+  return GpxService(repository: ref.watch(activityRepositoryProvider));
+});
+
+/// Directory holding cached map tiles.
+///
+/// The OS cache directory, not application support: these are re-downloadable
+/// and should be the first thing evicted when the device runs short on space,
+/// and they must never end up in an iCloud or Android backup.
+final tileCacheDirectoryProvider = FutureProvider<String>((ref) async {
+  final base = await getApplicationCacheDirectory();
+  final directory = Directory(p.join(base.path, 'map_tiles'));
+  await directory.create(recursive: true);
+  return directory.path;
+});
+
+/// The map tile provider, or `null` while the cache directory resolves.
+///
+/// Returning null rather than blocking means the map paints immediately on
+/// first launch and simply misses the cache for its first few tiles.
+final tileProviderProvider = Provider<TileProvider?>((ref) {
+  final directory = ref.watch(tileCacheDirectoryProvider).value;
+  if (directory == null) return null;
+  return buildCachedTileProvider(directory);
+});
 
 /// All saved activities, newest first, without their tracks.
 final activitiesProvider = StreamProvider<List<Activity>>((ref) {

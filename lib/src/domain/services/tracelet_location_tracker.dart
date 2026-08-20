@@ -67,12 +67,43 @@ class TraceletLocationTracker implements LocationTracker {
     // Subscribe before start() so no fix is lost in the gap.
     _locationSub ??= tl.Tracelet.onLocation((location) {
       final point = _toTrackPoint(location);
+      if (kDebugMode) {
+        // Distinguishes "the platform sent nothing" from "we discarded it".
+        // Without this the two are indistinguishable from the UI: both look
+        // like a map that never draws.
+        debugPrint(
+          '[RunFree] fix ${location.coords.latitude}, '
+          '${location.coords.longitude} '
+          'acc=${location.coords.accuracy} '
+          'moving=${location.isMoving} '
+          'mock=${location.isMock} '
+          '${point == null ? 'DROPPED (bad timestamp)' : 'accepted'}',
+        );
+      }
       if (point != null && !_controller.isClosed) {
         _controller.add(point);
       }
     });
 
-    await tl.Tracelet.start();
+    final state = await tl.Tracelet.start();
+    if (kDebugMode) {
+      debugPrint(
+        '[RunFree] tracking started: enabled=${state.enabled} '
+        'isMoving=${state.isMoving} mode=${state.trackingMode}',
+      );
+    }
+
+    // Tracelet starts in *stationary* mode and waits for its motion detector
+    // to promote it to moving mode before it samples GPS at full rate. That is
+    // the right default for passive trip tracking and the wrong one here:
+    // pressing "Start run" is an explicit statement of intent, so a runner who
+    // stands still for twenty seconds at the trailhead must already be
+    // recording, not waiting to be noticed.
+    //
+    // It is also what makes the app testable at all on the iOS Simulator,
+    // which can simulate location but has no accelerometer, so the promotion
+    // would never fire and the track would stay permanently empty.
+    await tl.Tracelet.changePace(true);
   }
 
   @override
@@ -141,9 +172,18 @@ class TraceletLocationTracker implements LocationTracker {
         // exactly when the user is moving fastest.
         disableElasticity: true,
         filter: const tl.LocationFilter(
-          // A spoofed fix in a fitness log is a corrupt record, not a
-          // security problem, but there is no reason to store one.
-          rejectMockLocations: true,
+          // A spoofed fix in a fitness log is a corrupt record, not a security
+          // problem, but there is no reason to store one — in a release build.
+          //
+          // In debug builds this MUST stay off. Tracelet's mockDetectionLevel
+          // defaults to `basic`, which flags anything the OS reports as
+          // software-simulated: the iOS Simulator's Features > Location
+          // routes, Xcode's "Simulate Location" on a real device, and Android
+          // mock-location apps. With rejection on, every one of those is
+          // silently dropped and the app looks broken — no track, no
+          // distance, no error — which makes the app untestable without
+          // physically going outside for every change.
+          rejectMockLocations: kReleaseMode,
         ),
       ),
       app: const tl.AppConfig(

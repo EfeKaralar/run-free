@@ -1,5 +1,5 @@
 name: run_free
-description: "Free and open-source running, cycling and activity tracking. Your data stays on your device."
+description: "Free and open-source running, cycling and activity tracking. Your data stays on your device unless you choose to sync it, encrypted."
 publish_to: 'none'
 
 # version: <semver>+<build number>
@@ -41,6 +41,9 @@ dependencies:
   flutter_map_cache: ^2.1.0
   dio: ^5.7.0
   dio_cache_interceptor: ^4.0.3
+  # Persistent (on-disk) tile cache. Without a file-backed store the cache is
+  # memory-only and every app launch re-downloads the same tiles.
+  http_cache_file_store: ^2.0.2
 
   # --- Platform / utilities ---------------------------------------------------
   path_provider: ^2.1.5
