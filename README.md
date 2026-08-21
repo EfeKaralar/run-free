@@ -167,10 +167,29 @@ The repository boundary described above exists so this lands behind
 Contributions are welcome. The project is Apache-2.0, so contributions are
 accepted under those terms and no CLA is required.
 
-Please run `flutter analyze` and `flutter test` before opening a pull request.
-Logic that computes a number a user will see — distance, pace, elevation,
-splits — should come with a test, since those are the numbers people compare
-against other apps.
+### Setup
+
+After cloning, enable the shared git hooks once:
+
+```bash
+git config core.hooksPath tooling/git-hooks
+```
+
+That installs a pre-commit hook running `flutter analyze` and `flutter test` on
+any commit touching Dart, so every commit on `main` is green and `git bisect`
+stays usable. `.git/hooks` is not versioned, which is why this step is manual.
+
+### Conventions
+
+- **Conventional Commits**: `feat(scope): summary`, plus a body explaining
+  *why* for anything non-trivial.
+- **One logical change per commit.** Never mix a refactor with a behaviour
+  change, or a bug fix with a feature — those are the splits that make history
+  reviewable and revertable.
+- **Branch and open a PR.** CI runs formatting, analysis and tests on every PR.
+- Run `dart format .` before committing; CI rejects unformatted code.
+- Logic that computes a number a user sees — distance, pace, elevation, splits
+  — needs a test. Those are the numbers people compare against other apps.
 
 ## Licence
 
