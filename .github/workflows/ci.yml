@@ -1,0 +1,50 @@
+name: CI
+
+# Local hooks can be bypassed with --no-verify, and contributors will not have
+# them installed at all. CI is the gate that actually holds.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  analyze-and-test:
+    name: Analyze and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          # Pinned rather than floating on `stable`: a Flutter upgrade should
+          # be a deliberate commit that can be reverted, not a surprise that
+          # turns an unrelated PR red.
+          flutter-version: '3.44.9'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify generated code is up to date
+        # database.g.dart is committed so that a fresh clone builds without
+        # running build_runner. That only stays true if nobody edits the schema
+        # and forgets to regenerate, which this step catches.
+        run: |
+          dart run build_runner build
+          if ! git diff --exit-code --stat; then
+            echo "::error::Generated code is stale. Run 'dart run build_runner build' and commit the result."
+            exit 1
+          fi
+
+      - name: Verify formatting
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Test
+        # --timeout so a hung widget test fails in seconds instead of burning
+        # the job's full six-hour budget.
+        run: flutter test --timeout 60s
