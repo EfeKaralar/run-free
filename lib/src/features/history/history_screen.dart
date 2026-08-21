@@ -42,10 +42,8 @@ class HistoryScreen extends ConsumerWidget {
           return ListView.builder(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 96),
             itemCount: items.length,
-            itemBuilder: (context, index) => _ActivityCard(
-              activity: items[index],
-              formatters: formatters,
-            ),
+            itemBuilder: (context, index) =>
+                _ActivityCard(activity: items[index], formatters: formatters),
           );
         },
       ),

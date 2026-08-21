@@ -61,7 +61,8 @@ class _RouteMapState extends State<RouteMap> {
       // refitting bounds means the zoom level the user chose is preserved.
       final latest = widget.points.last.latLng;
       _controller.move(latest, _controller.camera.zoom);
-    } else if (!_hasFittedBounds && oldWidget.points.length != widget.points.length) {
+    } else if (!_hasFittedBounds &&
+        oldWidget.points.length != widget.points.length) {
       // Reviewing: frame the whole route once, when it first arrives.
       _fitBounds();
     }
@@ -140,10 +141,7 @@ class _RouteMapState extends State<RouteMap> {
           // Attribution is a licence condition of OpenStreetMap data, not a
           // nicety. It stays on screen.
           attributions: [
-            TextSourceAttribution(
-              MapTiles.attribution,
-              onTap: () {},
-            ),
+            TextSourceAttribution(MapTiles.attribution, onTap: () {}),
           ],
         ),
       ],

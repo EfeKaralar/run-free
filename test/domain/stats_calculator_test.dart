@@ -189,11 +189,10 @@ void main() {
 
     test('average pace reflects moving time, not elapsed time', () {
       // 1 km covered in 300 s of movement, inside a 600 s elapsed window.
-      final stats = calculator
-          .compute(
-            straightTrack(count: 101, spacingMeters: 10, speed: 3),
-            elapsed: const Duration(seconds: 600),
-          );
+      final stats = calculator.compute(
+        straightTrack(count: 101, spacingMeters: 10, speed: 3),
+        elapsed: const Duration(seconds: 600),
+      );
 
       expect(stats.distanceMeters, closeTo(1000, 5));
       expect(stats.movingDuration.inSeconds, 100);
@@ -250,7 +249,10 @@ void main() {
     test('mile splits are longer than kilometre splits', () {
       final track = straightTrack(count: 401, spacingMeters: 10);
       final km = calculator.computeLaps(track, splitDistanceMeters: 1000);
-      final miles = calculator.computeLaps(track, splitDistanceMeters: 1609.344);
+      final miles = calculator.computeLaps(
+        track,
+        splitDistanceMeters: 1609.344,
+      );
 
       expect(km.length, greaterThan(miles.length));
     });

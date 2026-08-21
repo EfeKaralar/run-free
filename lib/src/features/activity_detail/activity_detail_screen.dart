@@ -117,10 +117,7 @@ class _Content extends StatelessWidget {
     return ListView(
       children: [
         if (activity.hasTrack)
-          SizedBox(
-            height: 280,
-            child: RouteMap(points: activity.points),
-          ),
+          SizedBox(height: 280, child: RouteMap(points: activity.points)),
         Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -196,12 +193,8 @@ class _Splits extends StatelessWidget {
         .map((l) => l.paceSecondsPerKm)
         .whereType<double>()
         .toList();
-    final slowest = paces.isEmpty
-        ? 1.0
-        : paces.reduce((a, b) => a > b ? a : b);
-    final fastest = paces.isEmpty
-        ? 0.0
-        : paces.reduce((a, b) => a < b ? a : b);
+    final slowest = paces.isEmpty ? 1.0 : paces.reduce((a, b) => a > b ? a : b);
+    final fastest = paces.isEmpty ? 0.0 : paces.reduce((a, b) => a < b ? a : b);
     final range = (slowest - fastest).abs() < 1 ? 1.0 : slowest - fastest;
 
     final splitUnit = formatters.units.distanceUnit;

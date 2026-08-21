@@ -86,10 +86,7 @@ class RecordingController extends Notifier<RecordingState> {
   Future<void> start() async {
     if (state.isActive || state.isBusy) return;
 
-    state = state.copyWith(
-      status: RecordingStatus.preparing,
-      clearError: true,
-    );
+    state = state.copyWith(status: RecordingStatus.preparing, clearError: true);
 
     var permission = state.permission;
     if (!permission.canRecord) {
