@@ -94,8 +94,8 @@ class StatsCalculator {
   /// count. The recording controller knows the true elapsed time; this function
   /// does not.
   ActivityStats compute(List<TrackPoint> points, {Duration? elapsed}) {
-    // TODO: Consider rewriting this function using better coding practices, 
-    // such as breaking it into smaller functions or using more descriptive variable names. 
+    // TODO: Consider rewriting this function using better coding practices,
+    // such as breaking it into smaller functions or using more descriptive variable names.
     // This would improve readability and maintainability.
     final usable = filterByAccuracy(points);
     if (usable.length < 2) {
@@ -174,8 +174,7 @@ class StatsCalculator {
       distanceMeters: distance,
       movingDuration: Duration(milliseconds: movingMillis),
       elapsedDuration:
-          elapsed ??
-          usable.last.timestamp.difference(usable.first.timestamp),
+          elapsed ?? usable.last.timestamp.difference(usable.first.timestamp),
       elevationGainMeters: gain,
       elevationLossMeters: loss,
       maxSpeedMetersPerSecond: maxSpeed,
@@ -246,7 +245,8 @@ class StatsCalculator {
         final fractionInsideLap = segment > 0
             ? ((segment - overshoot) / segment).clamp(0.0, 1.0)
             : 1.0;
-        final millisInsideLap = (lapMillis - deltaMillis) +
+        final millisInsideLap =
+            (lapMillis - deltaMillis) +
             (deltaMillis * fractionInsideLap).round();
 
         laps.add(

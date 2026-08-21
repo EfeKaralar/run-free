@@ -83,8 +83,11 @@ class Formatters {
   }
 
   /// Either pace or speed, depending on what the sport is normally measured in.
-  String paceOrSpeed(double? secondsPerKm, double metersPerSecond,
-      {required bool preferPace}) {
+  String paceOrSpeed(
+    double? secondsPerKm,
+    double metersPerSecond, {
+    required bool preferPace,
+  }) {
     return preferPace ? pace(secondsPerKm) : speed(metersPerSecond);
   }
 

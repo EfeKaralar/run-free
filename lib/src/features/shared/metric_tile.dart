@@ -60,9 +60,7 @@ class MetricRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (final child in children) Expanded(child: child),
-      ],
+      children: [for (final child in children) Expanded(child: child)],
     );
   }
 }

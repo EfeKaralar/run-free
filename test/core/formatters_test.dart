@@ -11,8 +11,10 @@ void main() {
 
   group('duration', () {
     test('drops the hour component below an hour', () {
-      expect(Formatters.duration(const Duration(minutes: 23, seconds: 45)),
-          '23:45');
+      expect(
+        Formatters.duration(const Duration(minutes: 23, seconds: 45)),
+        '23:45',
+      );
     });
 
     test('includes hours once past one', () {

@@ -307,8 +307,9 @@ class _BackgroundPermissionWarning extends ConsumerWidget {
           style: TextStyle(color: scheme.onErrorContainer),
         ),
         trailing: TextButton(
-          onPressed: () =>
-              ref.read(recordingControllerProvider.notifier).requestPermission(),
+          onPressed: () => ref
+              .read(recordingControllerProvider.notifier)
+              .requestPermission(),
           child: const Text('Fix'),
         ),
       ),

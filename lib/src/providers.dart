@@ -118,7 +118,9 @@ final activitiesProvider = StreamProvider<List<Activity>>((ref) {
 
 /// One activity with its full track. Auto-disposed: tracks are large and there
 /// is no reason to keep one resident after its screen closes.
-final activityProvider = StreamProvider.autoDispose
-    .family<Activity?, String>((ref, id) {
-      return ref.watch(activityRepositoryProvider).watchActivity(id);
-    });
+final activityProvider = StreamProvider.autoDispose.family<Activity?, String>((
+  ref,
+  id,
+) {
+  return ref.watch(activityRepositoryProvider).watchActivity(id);
+});

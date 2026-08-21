@@ -127,4 +127,3 @@ class AppDatabase extends _$AppDatabase {
     return driftDatabase(name: 'run_free');
   }
 }
-

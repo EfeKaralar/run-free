@@ -59,9 +59,7 @@ void main() {
     });
 
     test('omits ele when a point has no altitude', () {
-      final xml = writer.write(
-        buildActivity(points: straightTrack(count: 3)),
-      );
+      final xml = writer.write(buildActivity(points: straightTrack(count: 3)));
       expect(xml, isNot(contains('<ele>')));
     });
 
@@ -153,14 +151,11 @@ void main() {
 </gpx>
 ''';
       final points = reader.parse(xml).points;
-      expect(
-        points.map((p) => p.timestamp),
-        [
-          DateTime.utc(2026, 1, 1, 8, 0, 0),
-          DateTime.utc(2026, 1, 1, 8, 0, 10),
-          DateTime.utc(2026, 1, 1, 8, 0, 20),
-        ],
-      );
+      expect(points.map((p) => p.timestamp), [
+        DateTime.utc(2026, 1, 1, 8, 0, 0),
+        DateTime.utc(2026, 1, 1, 8, 0, 10),
+        DateTime.utc(2026, 1, 1, 8, 0, 20),
+      ]);
     });
 
     test('rejects a file with no track points', () {
@@ -170,10 +165,7 @@ void main() {
   <wpt lat="51.5" lon="-0.12"><name>A waypoint</name></wpt>
 </gpx>
 ''';
-      expect(
-        () => reader.parse(xml),
-        throwsA(isA<GpxParseException>()),
-      );
+      expect(() => reader.parse(xml), throwsA(isA<GpxParseException>()));
     });
 
     test('rejects malformed XML with a readable message', () {
